@@ -1,0 +1,21 @@
+[Desktop Entry]
+Name=No border on maximized windows
+Comment=Unfortunetly this feature is broken with Plasma 5. This simple script aims to do the job instead.
+Icon=preferences-system-windows-script-test
+
+Type=Service
+
+X-Plasma-API=javascript
+X-Plasma-MainScript=code/main.js
+
+X-KDE-PluginInfo-Author=Tamás Gere
+X-KDE-PluginInfo-Email=gt@kani.hu
+X-KDE-PluginInfo-Name=noBorderOnMaximized
+X-KDE-PluginInfo-Version=1.0
+
+X-KDE-PluginInfo-Depends=
+X-KDE-PluginInfo-License=GPL
+X-KDE-ServiceTypes=KWin/Script
+X-KDE-Library=kcm_kwin4_genericscripted
+X-KDE-PluginKeyword=noBorderOnMaximized
+X-KDE-ParentComponents=noBorderOnMaximized
