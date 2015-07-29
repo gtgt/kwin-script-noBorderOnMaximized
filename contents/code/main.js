@@ -44,7 +44,7 @@ workspace.clientMaximizeSet.connect(noBorderOnMaximized);
 var lastAdded;
 var checkMaximized = function() {
 		var area = workspace.clientArea(KWin.MaximizeArea, workspace.activeScreen, workspace.currentDesktop);
-		if (lastAdded.maximizable == true && lastAdded.normalWindow == true && lastAdded.width >= (area.width - 50) && lastAdded.height >= (area.height - 300)) {
+		if (lastAdded.maximizable == true && lastAdded.normalWindow == true && lastAdded.desktop >= 0 && lastAdded.width >= (area.width - 50) && lastAdded.height >= (area.height - 300)) {
 			/*
 			// re-check active client:
 			var activeClient = workspace.activeClient;
