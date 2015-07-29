@@ -17,25 +17,57 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *********************************************************************/
 var borderless = new Array();
+function d(obj) {
+	for (i in obj) print('debug: ['+i+']: '+obj[i]);
+}
 function noBorderOnMaximized(client, h, v) {
-	if (h && v) {
-		// maximized
-		print('Maximized: "'+client.caption+'"');
+	if (client.maximizable && h && v) {
+		//print('Maximized: "'+client.caption+'"');
 		if (client.noBorder == false) {
-			print('Removing border: "'+client.caption+'"');
+			//print('Removing border: "'+client.caption+'"');
 			borderless[borderless.length] = client;
 			client.noBorder = true;
 		}
 	} else {
-		// no longer maximized
-		print('No longer maximized: "'+client.caption+'"');
+		//print('No longer maximized: "'+client.caption+'"');
 		var found = borderless.indexOf(client);
 		if (found != -1) {
-			print('Restoring border: "'+client.caption+'"');
+			//print('Restoring border: "'+client.caption+'"');
 			client.noBorder = false;
 			borderless.splice(found, 1);
 		}
 	}
 }
- 
+
 workspace.clientMaximizeSet.connect(noBorderOnMaximized);
+
+var lastAdded;
+var checkMaximized = function() {
+		var area = workspace.clientArea(KWin.MaximizeArea, workspace.activeScreen, workspace.currentDesktop);
+		if (lastAdded.maximizable == true && lastAdded.normalWindow == true && lastAdded.width >= (area.width - 50) && lastAdded.height >= (area.height - 300)) {
+			/*
+			// re-check active client:
+			var activeClient = workspace.activeClient;
+			if (activeClient != lastAdded) workspace.activeClient = lastAdded;
+			workspace.slotWindowMaximize();
+			workspace.slotWindowMaximize();
+			if (activeClient != lastAdded) workspace.activeClient = activeClient;
+			*/
+			//execute our func
+			noBorderOnMaximized(lastAdded, true, true);
+		}
+};
+
+var tim = new QTimer;
+tim.singleShot = true;
+tim.timeout.connect(checkMaximized);
+
+workspace.clientAdded.connect(function(client) {
+	lastAdded = client;
+	tim.start(1); // wait until the client is actually mapped and activ(atabl)e
+	//client['clientMaximizedStateChanged(KWin::Client*,bool,bool)'].connect(noBorderOnMaximized);
+});
+
+workspace.clientRemoved.connect(function(client) {
+	noBorderOnMaximized(client, false, false);
+});
