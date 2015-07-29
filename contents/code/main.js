@@ -64,7 +64,8 @@ tim.timeout.connect(checkMaximized);
 
 workspace.clientAdded.connect(function(client) {
 	lastAdded = client;
-	tim.start(1); // wait until the client is actually mapped and activ(atabl)e
+	checkMaximized();
+	//tim.start(1); // wait until the client is actually mapped and activ(atabl)e
 	//client['clientMaximizedStateChanged(KWin::Client*,bool,bool)'].connect(noBorderOnMaximized);
 });
 
