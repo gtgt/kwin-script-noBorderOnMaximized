@@ -31,7 +31,7 @@ function noBorderOnMaximized(client, h, v) {
 	} else {
 		//print('No longer maximized: "'+client.caption+'"');
 		var found = borderless.indexOf(client);
-		if (found != -1) {
+		if (found != -1 || client.noBorder == true) {
 			//print('Restoring border: "'+client.caption+'"');
 			client.noBorder = false;
 			borderless.splice(found, 1);
@@ -44,17 +44,20 @@ workspace.clientMaximizeSet.connect(noBorderOnMaximized);
 var lastAdded;
 var checkMaximized = function() {
 		var area = workspace.clientArea(KWin.MaximizeArea, workspace.activeScreen, workspace.currentDesktop);
-		if (lastAdded.maximizable == true && lastAdded.normalWindow == true && lastAdded.desktop >= 0 && lastAdded.width >= (area.width - 50) && lastAdded.height >= (area.height - 300)) {
-			/*
+		if (lastAdded.maximizable == true && lastAdded.normalWindow == true && lastAdded.width >= (area.width - 5) && lastAdded.height >= (area.height - 40)) {
+			print('Initially maximized: '+lastAdded.caption);
+			
 			// re-check active client:
 			var activeClient = workspace.activeClient;
 			if (activeClient != lastAdded) workspace.activeClient = lastAdded;
 			workspace.slotWindowMaximize();
 			workspace.slotWindowMaximize();
 			if (activeClient != lastAdded) workspace.activeClient = activeClient;
-			*/
+			
 			//execute our func
 			noBorderOnMaximized(lastAdded, true, true);
+		} else {
+			print('Initially NOT maximized: '+lastAdded.caption);
 		}
 };
 
